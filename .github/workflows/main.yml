@@ -26,3 +26,11 @@ jobs:
         run: | #simbolo usato per introdurre più comandi
           mvn clean
           mvn -B package --file pom.xml
+
+      - name: Build docker image
+        uses: actions/build-push-actions@v2
+        with:
+          context: . #Percorso del dockerfile per la build
+          dockerfile: Dockerfile
+          push: false #In questo step verifichiamo solo se siamo in grado di fare la build. Faremo la push successivamente
+          tags:  ${{ secrets.DOCKER_HUB__USERNAME }}/freelancing:$(date +'%Y-%m-%d') #<dockerhub-username>/<repository-name>:<tag>
