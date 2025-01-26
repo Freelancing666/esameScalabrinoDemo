@@ -1,0 +1,28 @@
+name: Build & Deploy spring app
+on: #definisce il trigger dell'azione
+  push:
+    branches:
+      - master
+
+
+jobs:
+  build-deploy: #Nome del job
+    name: build and deploy this app
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup jdk 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Unit Tests
+        run: mvn -B test --file pom.xml
+
+      - name: Build the app
+        run: | #simbolo usato per introdurre più comandi
+          mvn clean
+          mvn mvn -B package --file pom.xml
